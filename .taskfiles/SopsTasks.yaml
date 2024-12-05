@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: "3"
+
+tasks:
+  check:
+    internal: true
+    preconditions:
+      - sh: command -v sops
+        msg: sops is not installed.
+      - sh: "[ -f ${SOPS_AGE_KEY_FILE} ]"
+        msg: the age key not found.
+
+  encrypt:
+    deps: [check]
+    desc: Encrypt sops secret.
+    cmd: sops --encrypt {{.CLI_ARGS}}
+
+  decrypt:
+    deps: [check]
+    desc: Decrypt sops secret.
+    cmd: sops --decrypt {{.CLI_ARGS}}
+
+  encrypt-inplace:
+    deps: [check]
+    desc: Encrypt sops secret (in-place).
+    cmd: sops --encrypt --in-place {{.CLI_ARGS}}
+
+  decrypt-inplace:
+    deps: [check]
+    desc: Decrypt sops secret (in-place).
+    cmd: sops --decrypt --in-place {{.CLI_ARGS}}

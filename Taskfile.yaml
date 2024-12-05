@@ -2,12 +2,14 @@
 ---
 version: "3"
 
-env: {}
+env:
+  SOPS_AGE_KEY_FILE: "{{.HOME}}/.config/age/misklinga.txt"
 
 vars: {}
 
 includes:
   precommit: .taskfiles/PrecommitTasks.yaml
+  sops: .taskfiles/SopsTasks.yaml
 
 tasks:
   default:
