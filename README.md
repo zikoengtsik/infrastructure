@@ -1,8 +1,9 @@
 # Infrastructure
 
-Personal infrastructure, combining the benefits of on-premise storage with cloud accessibility.
+[![document](https://img.shields.io/website?label=document&logo=materialformkdocs&url=https%3A%2F%2Finfra.zikoeng.com)](https://infra.zikoeng.com)
+[![license](https://img.shields.io/github/license/zikoengtsik/infrastructure?logo=gnu)](https://www.gnu.org/licenses/gpl-3.0.html)
 
-The main idea is to centralize all configuration, whether they are applied to cloud instances or local instances, and make it easy to manage instances and manage services.
+Personal infrastructure. Explore the [documentation](https://infra.zikoeng.com) for more information.
 
 ## License
 
