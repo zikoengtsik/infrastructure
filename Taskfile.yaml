@@ -8,6 +8,7 @@ vars: {}
 
 includes:
   precommit: .taskfiles/PrecommitTasks.yaml
+  docs: .taskfiles/DocsTasks.yaml
 
 tasks:
   default:
