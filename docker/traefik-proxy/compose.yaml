@@ -1,0 +1,107 @@
+---
+name: traefik-proxy
+
+networks:
+  ingress-traefik:
+    external: true
+
+services:
+  traefik-proxy:
+    image: ${TRAEFIK_IMAGE}
+    container_name: ${TRAEFIK_CONTAINER_NAME}
+    restart: always
+    command:
+      # Disable data collection
+      - --global.sendanonymoususage=false
+      # Disable check for new version
+      - --global.checknewversion=false
+      # EntryPoints: web
+      - --entrypoints.web.address=:${TRAEFIK_HTTP_PORT}
+      - --entrypoints.web.http.middlewares=redirect-to-https@file
+      # EntryPoints: websecure
+      - --entrypoints.websecure.address=:${TRAEFIK_HTTPS_PORT}
+      - --entryPoints.websecure.asDefault=true
+      - --entrypoints.websecure.http.tls.certresolver=letsencrypt
+      - --entrypoints.websecure.http.tls.domains[0].main=${TRAEFIK_DNS_MAIN}
+      - --entrypoints.websecure.http.tls.domains[0].sans=${TRAEFIK_DNS_SANS}
+      # Enable HTTP/3
+      - --entryPoints.websecure.http3
+      - --entryPoints.websecure.http3.advertisedport=${TRAEFIK_HTTPS_PORT}
+      # Enable ping endpoint, useful for healthchecks
+      - --ping=true
+      # Enable api endpoint, useful for debugging
+      - --api=true
+      - --api.dashboard=true
+      - --api.insecure=false
+      # Enable logging
+      - --log.level=${TRAEFIK_LOG_LEVEL}
+      - --log.format=${TRAEFIK_LOG_FORMAT}
+      - --log.filePath=${TRAEFIK_LOG_FILE_PATH}
+      - --accesslog=true
+      - --accesslog.format=${TRAEFIK_ACCESS_LOG_FORMAT}
+      - --accesslog.filePath=${TRAEFIK_ACCESS_LOG_FILE_PATH}
+      # Providers: Docker
+      - --providers.docker=true
+      - --providers.docker.watch=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.docker.network=ingress-traefik
+      # Providers: File
+      - --providers.file=true
+      - --providers.file.watch=true
+      - --providers.file.directory=/dynamic
+      # Certificates Resolvers: Let's Encrypt
+      - --certificatesresolvers.letsencrypt.acme.email=${TRAEFIK_ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme.json
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=${TRAEFIK_ACME_DNS_PROVIDER}
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.delayBeforeCheck=30
+    networks:
+      - ingress-traefik
+    ports:
+      - target: ${TRAEFIK_HTTP_PORT}
+        published: ${TRAEFIK_HTTP_PORT}
+        protocol: tcp
+        mode: host
+      - target: ${TRAEFIK_HTTPS_PORT}
+        published: ${TRAEFIK_HTTPS_PORT}
+        protocol: tcp
+        mode: host
+      - target: ${TRAEFIK_HTTPS_PORT}
+        published: ${TRAEFIK_HTTPS_PORT}
+        protocol: udp
+        mode: host
+    environment:
+      - TZ=${TIMEZONE}
+      - CF_DNS_API_TOKEN=${TRAEFIK_CF_DNS_API_TOKEN}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${TRAEFIK_ROOT_DIR}/dynamic:/dynamic:ro
+      - ${TRAEFIK_ROOT_DIR}/data:/etc/traefik
+    healthcheck:
+      test: wget -q --spider --proxy off localhost:8080/ping || exit 1
+      interval: 15s
+      timeout: 15s
+      retries: 3
+      start_period: 15s
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik-proxy-dashboard.rule=Host(`${TRAEFIK_DASHBOARD_DOMAIN}`)
+      - traefik.http.routers.traefik-proxy-dashboard.entrypoints=web,websecure
+      - traefik.http.routers.traefik-proxy-dashboard.service=api@internal
+      - traefik.http.routers.traefik-proxy-dashboard.middlewares=compression@file
+
+  whoami:
+    image: ${WHOAMI_IMAGE}
+    container_name: ${WHOAMI_CONTAINER_NAME}
+    restart: always
+    networks:
+      - ingress-traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik-proxy-whoami.rule=Host(`${WHOAMI_DOMAIN}`)
+      - traefik.http.routers.traefik-proxy-whoami.entrypoints=web,websecure
+      - traefik.http.services.traefik-proxy-whoami.loadbalancer.server.port=80
