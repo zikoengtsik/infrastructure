@@ -1,0 +1,8 @@
+---
+stores:
+  yaml:
+    indent: 2
+
+x-agekey: &agekey "age19kan5473q502eng9mmsw8ug0q7zjx9fj2p3e2f5tvjuxwma2fd3sga9aa3"
+
+creation_rules: []

@@ -10,6 +10,8 @@ includes:
   precommit: .taskfiles/PrecommitTasks.yaml
   docs: .taskfiles/DocsTasks.yaml
 
+  sops: .taskfiles/SopsTasks.yaml
+
 tasks:
   default:
     desc: List all tasks.

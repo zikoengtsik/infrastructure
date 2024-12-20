@@ -1,6 +1,8 @@
 ---
 extends: default
 
+ignore: []
+
 rules:
   comments-indentation: enable
   document-start: enable
