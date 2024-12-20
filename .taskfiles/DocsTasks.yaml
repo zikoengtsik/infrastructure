@@ -4,7 +4,7 @@ version: "3"
 
 tasks:
   deps:
-    desc: Install dependencies.
+    desc: Manage Docs dependencies.
     preconditions:
       - sh: command -v poetry
         msg: poetry is not installed.
