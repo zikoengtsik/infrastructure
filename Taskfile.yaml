@@ -4,13 +4,15 @@ version: "3"
 
 env: {}
 
-vars: {}
+vars:
+  ANSIBLE_ROOT_DIR: "{{.ROOT_DIR}}/ansible"
 
 includes:
   precommit: .taskfiles/PrecommitTasks.yaml
   docs: .taskfiles/DocsTasks.yaml
 
   sops: .taskfiles/SopsTasks.yaml
+  ansible: .taskfiles/AnsibleTasks.yaml
 
 tasks:
   default:

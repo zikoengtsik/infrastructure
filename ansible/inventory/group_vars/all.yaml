@@ -1,0 +1,15 @@
+---
+# ===============================================================
+# Ansible Special Variables
+# ref: https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html
+# ===============================================================
+
+# The user Ansible 'logs in' as.
+ansible_user: root
+
+# ===============================================================
+# Addon Variables
+# ===============================================================
+
+# Addon tags
+addon_tags: []

@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: "3"
+
+tasks:
+  check:
+    internal: true
+    preconditions:
+      - sh: command -v ansible
+        msg: ansible is not installed.
+
+  deps:
+    desc: Manage Ansible dependencies.
+    preconditions:
+      - sh: command -v poetry
+        msg: poetry is not installed.
+    cmds:
+      - poetry install --with ansible
+      - poetry run ansible-galaxy install --force --role-file {{.ANSIBLE_ROOT_DIR}}/requirements.yaml
+
+  inventory:
+    deps: [check]
+    desc: List all host(s) in inventory.
+    cmd: ansible-inventory {{default "--graph" .CLI_ARGS}}
+
+  ping:
+    deps: [check]
+    desc: Try to connect to special host(s).
+    cmd: ansible -m ping {{default "all" .CLI_ARGS}}
