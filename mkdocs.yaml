@@ -1,0 +1,56 @@
+---
+site_name: Zikoeng's Infrastructure
+site_url: https://infra.zikoeng.com
+
+copyright: "Copyright &copy; 2024 Zikoeng Tsik"
+
+repo_url: https://github.com/zikoengtsik/infrastructure
+repo_name: zikoengtsik/infrastructure
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/git-alt
+  font:
+    text: Roboto
+    code: Roboto Mono
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: red
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: red
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  features:
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.sections
+
+nav:
+  - Home:
+      - index.md
+      - license.md
+
+markdown_extensions:
+  - meta
+  - toc:
+      permalink: true
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true

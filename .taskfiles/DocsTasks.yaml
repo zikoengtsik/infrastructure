@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: "3"
+
+tasks:
+  deps:
+    desc: Install Docs dependencies.
+    preconditions:
+      - sh: command -v poetry
+        msg: poetry is not installed.
+    cmd: poetry install --with docs
+
+  serve:
+    desc: Start the live-reloading docs server.
+    cmd: poetry run mkdocs serve --livereload
+
+  build:
+    desc: Build the documentation site.
+    cmd: poetry run mkdocs build {{.CLI_ARGS}}
