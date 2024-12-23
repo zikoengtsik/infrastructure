@@ -46,6 +46,7 @@ nav:
       - reference/index.md
       - Naming Conventions:
           - reference/naming-conventions/index.md
+          - reference/naming-conventions/personal-user.md
 
 markdown_extensions:
   - meta
