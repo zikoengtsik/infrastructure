@@ -44,6 +44,8 @@ nav:
       - license.md
   - Reference:
       - reference/index.md
+      - Naming Conventions:
+          - reference/naming-conventions/index.md
 
 markdown_extensions:
   - meta
