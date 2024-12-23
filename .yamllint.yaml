@@ -1,0 +1,13 @@
+---
+extends: default
+
+rules:
+  comments-indentation: enable
+  document-start: enable
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+  line-length:
+    max: 120
+  truthy:
+    allowed-values: ["true", "false"]

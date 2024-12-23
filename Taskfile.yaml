@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: "3"
+
+env: {}
+
+vars: {}
+
+includes:
+  precommit: .taskfiles/PrecommitTasks.yaml
+
+tasks:
+  default:
+    desc: List all tasks.
+    cmd: task --list-all

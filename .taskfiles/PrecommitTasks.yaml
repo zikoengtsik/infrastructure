@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: "3"
+
+tasks:
+  check:
+    internal: true
+    preconditions:
+      - sh: command -v pre-commit
+        msg: pre-commit is not installed.
+
+  init:
+    deps: [check]
+    desc: Initialize pre-commit hooks.
+    cmd: pre-commit install --install-hooks
+
+  run:
+    deps: [check]
+    desc: Run pre-commit hooks.
+    cmd: pre-commit run --all-files
+
+  update:
+    deps: [check]
+    desc: Update pre-commit hooks.
+    cmd: pre-commit autoupdate
