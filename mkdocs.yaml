@@ -47,6 +47,7 @@ nav:
       - Naming Conventions:
           - reference/naming-conventions/index.md
           - reference/naming-conventions/personal-user.md
+          - reference/naming-conventions/personal-device.md
 
 markdown_extensions:
   - meta
